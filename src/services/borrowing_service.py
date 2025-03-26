@@ -51,10 +51,10 @@ class BorrowingService:
             raise ValueError(f"Unexpected error: {str(e)}")
 
     @staticmethod
-    def return_book(borrowing_id):
+    def return_book(id):
         try:
             db.session.begin()
-            borrowing = Borrowing.query.with_for_update().get(borrowing_id)
+            borrowing = Borrowing.query.with_for_update().get(id)
             print(borrowing)
             if not borrowing:
                 raise ValueError("Borrowing record not found")

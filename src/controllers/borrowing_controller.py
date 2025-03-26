@@ -30,9 +30,9 @@ class BorrowController:
             return jsonify({"error": str(e)}), 500
 
     @staticmethod
-    def returning_book(borrowing_id):
+    def returning_book(id):
         try:
-            borrowing = BorrowingService.return_book(borrowing_id)
+            borrowing = BorrowingService.return_book(id)
             return (
                 jsonify(
                     {
