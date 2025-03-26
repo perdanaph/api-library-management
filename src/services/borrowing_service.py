@@ -49,3 +49,35 @@ class BorrowingService:
         except Exception as e:
             db.session.rollback()
             raise ValueError(f"Unexpected error: {str(e)}")
+
+    @staticmethod
+    def return_book(borrowing_id):
+        try:
+            db.session.begin()
+            borrowing = Borrowing.query.with_for_update().get(borrowing_id)
+            print(borrowing)
+            if not borrowing:
+                raise ValueError("Borrowing record not found")
+
+            if borrowing.status == "RETURNED" or borrowing.return_date != None:
+                raise ValueError("Book already returned")
+
+            book = Book.query.with_for_update().get(borrowing.book_id)
+            book.stock += 1
+
+            borrowing.status = "RETURNED"
+            borrowing.return_date = date.today()
+
+            db.session.commit()
+            return borrowing
+
+        except SQLAlchemyError as e:
+            db.session.rollback()
+            raise ValueError(f"Database error: {str(e)}")
+        except ValueError as e:
+            db.session.rollback()
+            raise
+        except Exception as e:
+            db.session.rollback()
+            print(e)
+            raise ValueError(f"Unexpected error: {str(e)}")

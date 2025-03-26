@@ -28,3 +28,21 @@ class BorrowController:
             return jsonify({"error": str(e)}), 400
         except Exception as e:
             return jsonify({"error": str(e)}), 500
+
+    @staticmethod
+    def returning_book(borrowing_id):
+        try:
+            borrowing = BorrowingService.return_book(borrowing_id)
+            return (
+                jsonify(
+                    {
+                        "message": "Book returned successfully",
+                        "data": borrowing.to_dict(),
+                    }
+                ),
+                200,
+            )
+        except ValueError as e:
+            return jsonify({"error": str(e)}), 400
+        except Exception as e:
+            return jsonify({"error": str(e)}), 500
