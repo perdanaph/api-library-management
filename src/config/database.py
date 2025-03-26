@@ -1,3 +1,5 @@
+from datetime import datetime
+import uuid
 from flask_sqlalchemy import SQLAlchemy
 import os
 from dotenv import load_dotenv
@@ -14,8 +16,9 @@ def init_db(app):
     with app.app_context():
         db.create_all()
 
-def create_app():
-    app = Flask(__name__)
-    # ... kode lainnya ...
-    app.cli.add_command(check_db_command)
-    return app
+class BaseModel(db.Model):
+    __abstract__ = True
+    
+    id = db.Column(db.String(36), primary_key=True, default=lambda: str(uuid.uuid4()))
+    created_at = db.Column(db.DateTime, server_default=db.func.current_timestamp())
+    updated_at = db.Column(db.DateTime,server_default=db.func.current_timestamp(), onupdate=db.func.current_timestamp())

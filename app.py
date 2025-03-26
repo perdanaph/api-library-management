@@ -18,7 +18,6 @@ def check_db_command():
 
 def create_app():
     app = Flask(__name__)
-    # ... kode lainnya ...
     init_db(app)
     app.cli.add_command(check_db_command)
     return app
