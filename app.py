@@ -5,6 +5,7 @@ from sqlalchemy import text
 from src.config.database import init_db
 from src.routes.book_routes import book_blueprint
 from src.routes.member_routes import member_blueprint
+from src.routes.borrowing_routes import borrow_blueprint
 
 
 @click.command("check-db")
@@ -28,6 +29,7 @@ def create_app():
     baseUrlAPI = "/api"
     app.register_blueprint(book_blueprint, url_prefix=baseUrlAPI + "/books")
     app.register_blueprint(member_blueprint, url_prefix=baseUrlAPI + "/members")
+    app.register_blueprint(borrow_blueprint, url_prefix=baseUrlAPI + "/borrowings")
 
     # check connection DB
     app.cli.add_command(check_db_command)
