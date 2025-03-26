@@ -24,14 +24,25 @@ def check_db_command():
 def create_app():
     app = Flask(__name__)
 
-    # Init database
+    @app.route("/")
+    def home():
+        return jsonify(
+            {
+                "message": "Selamat datang di Library Management System",
+                "api_endpoints": {
+                    "books": f"{baseUrlAPI}/books",
+                    "members": f"{baseUrlAPI}/members",
+                    "borrowings": f"{baseUrlAPI}/borrowings",
+                },
+            }
+        )
+
     init_db(app)
     baseUrlAPI = "/api"
     app.register_blueprint(book_blueprint, url_prefix=baseUrlAPI + "/books")
     app.register_blueprint(member_blueprint, url_prefix=baseUrlAPI + "/members")
     app.register_blueprint(borrow_blueprint, url_prefix=baseUrlAPI + "/borrowings")
 
-    # check connection DB
     app.cli.add_command(check_db_command)
 
     # error handlers

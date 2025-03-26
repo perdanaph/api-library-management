@@ -1,3 +1,5 @@
+# file ini hanya untuk percobaan melakukan interaksi dengan database untuk melakukan pengecekan database terkoneksi dengan aman
+
 from src.config.database import db, init_db
 from src.models.book import Book
 from src.models.member import Member
@@ -8,7 +10,6 @@ from flask import Flask
 
 app = Flask(__name__)
 
-# Initialize database
 init_db(app)
 
 
@@ -35,13 +36,11 @@ def test_models():
             )
             db.session.add(member)
 
-            db.session.commit()  # Commit both book and member first
+            db.session.commit()
             print("✅ Basic model creation successful!")
 
             print(f"Book ID: {book.id}")
             print(f"Member ID: {member.id}")
-
-            # Test Borrowing model - make sure book and member IDs are properly set
             borrowing = Borrowing(
                 book_id=book.id, member_id=member.id, borrow_date=date.today()
             )
@@ -63,7 +62,7 @@ def test_models():
             db.session.rollback()
             print("❌ Model test failed!")
             print("Error:", e)
-            raise  # Re-raise the exception to see full traceback
+            raise
 
 
 if __name__ == "__main__":
